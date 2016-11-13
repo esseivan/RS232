@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:nsd="http://structorizer.fisch.lu/" version="3.25-06" preRepeat="jusqu'à " postFor="à" preReturn="return" postForIn=" en " preWhile="tant que " output="écrire" input="lire " preFor="pour " preExit="exit" preLeave="leave" ignoreCase="true" preForIn="pour " stepFor=", pas = " text="&#34;ChangeChar&#34;" comment="" color="ffffff" type="sub" style="nice">
+	<children>
+		<instruction text="&#34;Attendre un certain temps&#34;" comment="" color="80ffff" rotated="0" disabled="0"></instruction>
+		<alternative text="&#34;(Si le caractère est entre 'A' et 'Z' et que CMD2 est pressé)&#34;" comment="" color="80ff80" disabled="0">
+			<qTrue>
+				<instruction text="&#34;Incrémenter de 20&#34;" comment="" color="80ff80" rotated="0" disabled="0"></instruction>
+			</qTrue>
+			<qFalse>
+				<alternative text="&#34;(Si le caractère est entre 'a' et 'z' et que CMD2 est pressé)&#34;" comment="" color="ffff80" disabled="0">
+					<qTrue>
+						<instruction text="&#34;décrémenter de 20&#34;" comment="" color="ffff80" rotated="0" disabled="0"></instruction>
+					</qTrue>
+					<qFalse>
+						<alternative text="&#34;(Si le caractère est égal au caractère maximal)&#34;" comment="" color="ff8080" disabled="0">
+							<qTrue>
+								<instruction text="&#34;Placer la valeur de 0x20 (espace en ASCII)&#34;" comment="" color="ff8080" rotated="0" disabled="0"></instruction>
+							</qTrue>
+							<qFalse>
+								<instruction text="&#34;Incrémenter&#34;" comment="" color="80ff80" rotated="0" disabled="0"></instruction>
+							</qFalse>
+						</alternative>
+					</qFalse>
+				</alternative>
+			</qFalse>
+		</alternative>
+		<instruction text="&#34;Réafficher le texte&#34;" comment="" color="80ffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;Replacer le curseur à son emplacement&#34;" comment="" color="80ffff" rotated="0" disabled="0"></instruction>
+	</children>
+</root>

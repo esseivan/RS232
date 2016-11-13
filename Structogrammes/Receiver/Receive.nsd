@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:nsd="http://structorizer.fisch.lu/" version="3.25-06" preRepeat="jusqu'à " postFor="à" preReturn="return" postForIn=" en " preWhile="tant que " output="écrire" input="lire " preFor="pour " preExit="exit" preLeave="leave" ignoreCase="true" preForIn="pour " stepFor=", pas = " text="&#34;Receive&#34;" comment="" color="ffffff" type="sub" style="nice">
+	<children>
+		<instruction text="&#34;Mettre la pin RX en entrée&#34;" comment="" color="80ffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;Activer l'interruption de la réception de données&#34;" comment="" color="80ffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;Activer la réception continue de données&#34;" comment="" color="80ffff" rotated="0" disabled="0"></instruction>
+		<while text="&#34;tant que (Flag 8 octets reçus = 0)&#34;" comment="" color="80ff80" disabled="0">
+			<qWhile>
+				<instruction text="&#34;Faire clignoter la led à 4Hz&#34;" comment="" color="80ffff" rotated="0" disabled="0"></instruction>
+				<alternative text="&#34;(Erreur overrun)&#34;" comment="" color="ff8080" disabled="0">
+					<qTrue>
+						<instruction text="&#34;Mettre à 0 CREN&#34;" comment="" color="ff8080" rotated="0" disabled="0"></instruction>
+						<instruction text="&#34;Attendre&#34;" comment="" color="ff8080" rotated="0" disabled="0"></instruction>
+						<instruction text="&#34;Mettre à 1 CREN&#34;" comment="" color="ff8080" rotated="0" disabled="0"></instruction>
+					</qTrue>
+					<qFalse>
+						<instruction text="&#34;Ne rien faire&#34;" comment="" color="c0c0c0" rotated="0" disabled="0"></instruction>
+					</qFalse>
+				</alternative>
+			</qWhile>
+		</while>
+		<instruction text="&#34;Eteindre la led&#34;" comment="" color="80ffff" rotated="0" disabled="0"></instruction>
+	</children>
+</root>

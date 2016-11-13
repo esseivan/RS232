@@ -1,0 +1,7 @@
+Structogrammes Initialisation ?
+Function prototype de l'interrupt ISR ?
+RS-232 conventions
+	- Inverser les données envoyées
+PEIE = 1 required?
+
+Ordre dans le code, structure, emplacements des fonctions, etc

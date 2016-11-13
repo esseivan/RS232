@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:nsd="http://structorizer.fisch.lu/" version="3.25-06" preRepeat="jusqu'à " postFor="à" preReturn="return" postForIn=" en " preWhile="tant que " output="écrire" input="lire " preFor="pour " preExit="exit" preLeave="leave" ignoreCase="true" preForIn="pour " stepFor=", pas = " text="&#34;Main (Transmitter)&#34;" comment="" color="ffffff" type="program" style="nice">
+	<children>
+		<instruction text="&#34;Initialisation&#34;" comment="" color="80ffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;Afficher message menu&#34;" comment="" color="80ffff" rotated="0" disabled="0"></instruction>
+		<repeat text="&#34;Boucle infinie&#34;" comment="" color="8080ff" disabled="0">
+			<qRepeat>
+				<alternative text="&#34;(CMD1 pressé)&#34;" comment="" color="80ff80" disabled="0">
+					<qTrue>
+						<call text="&#34;ShiftCursorRight&#34;" comment="" color="80ff80" disabled="0"></call>
+					</qTrue>
+					<qFalse>
+						<alternative text="&#34;(CMD2 pressé)&#34;" comment="" color="ffff80" disabled="0">
+							<qTrue>
+								<call text="&#34;ChangeChar&#34;" comment="" color="ffff80" disabled="0"></call>
+							</qTrue>
+							<qFalse>
+								<alternative text="&#34;(CMD4 pressé)&#34;" comment="" color="ff8080" disabled="0">
+									<qTrue>
+										<call text="&#34;TransmitMsg&#34;" comment="" color="ff8080" disabled="0"></call>
+									</qTrue>
+									<qFalse>
+										<instruction text="&#34;Ne rien faire&#34;" comment="" color="c0c0c0" rotated="0" disabled="0"></instruction>
+									</qFalse>
+								</alternative>
+							</qFalse>
+						</alternative>
+					</qFalse>
+				</alternative>
+			</qRepeat>
+		</repeat>
+	</children>
+</root>
