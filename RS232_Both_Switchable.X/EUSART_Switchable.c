@@ -119,7 +119,7 @@
 //****************************
 // Messages
 #define MSG_DEFAULT_L1 "World  !"      			// Message par défaut sur la ligne 1
-#define MSG_DEFAULT_L2 "> C   Tx"     			// Message par sur la ligne 2
+#define MSG_DEFAULT_L2 "> C   Tx"     			// Message par défaut sur la ligne 2
 
 #define Waiting " Waiting"                      // Message d'attente
 #define Idle "RS-232"                           // Message RS-232
@@ -165,32 +165,35 @@ void Reset(void);                               // Redémarrer le pic
 //****************************
 void ChangeChar (void){                         // Change le caractère
                                                 // CMD2 pressé longuement : MAJ -> min | min -> MAJ
-__delay_ms(200);                                // Detect long press or short press
+    __delay_ms(225);                            // Detect long press or short press
 
                                                 // Si KEY2 toujours pressé et valeur entre 'A' et 'Z'
-if((MenuChar[MenuRow] >= ASCII_A_MAJ) && (MenuChar[MenuRow] <= ASCII_Z_MAJ) && PERIPHERAL_KEY2 == 0)
-{
-    MenuChar[MenuRow] += 0x20;                  // Passage MAJ à min : +20h
-} else {
-    
-                                                // Si KEY2 toujours pressé et valeur entre 'a' et 'z'
-if((MenuChar[MenuRow] >= ASCII_A_MIN) && (MenuChar[MenuRow] <= ASCII_Z_MIN) && PERIPHERAL_KEY2 == 0)
-{
-    MenuChar[MenuRow] -= 0x20;                  // Passage min à MAJ : -20h
-} else {
-    
-    if(MenuChar[MenuRow] >= MENU_ASCII_MAX)     // Si valeur plus grand que valeur max
+    if((MenuChar[MenuRow] >= ASCII_A_MAJ) && (MenuChar[MenuRow] <= ASCII_Z_MAJ) && PERIPHERAL_KEY2 == 0)
     {
-        MenuChar[MenuRow] = MENU_ASCII_MIN;     // Placer la valeur à la valeur min
-    } else {
-        MenuChar[MenuRow]++;                    // Sinon, incrémenter de 1
+        MenuChar[MenuRow] += 0x20;              // Passage MAJ à min : +20h
     }
-}
-}
+    else 
+    {                                           // Si KEY2 toujours pressé et valeur entre 'a' et 'z'
+        if((MenuChar[MenuRow] >= ASCII_A_MIN) && (MenuChar[MenuRow] <= ASCII_Z_MIN) && PERIPHERAL_KEY2 == 0)
+        {
+            MenuChar[MenuRow] -= 0x20;          // Passage min à MAJ : -20h
+        }
+        else
+        {
+            if(MenuChar[MenuRow] >= MENU_ASCII_MAX) // Si valeur plus grand que valeur max
+            {
+                MenuChar[MenuRow] = MENU_ASCII_MIN; // Placer la valeur à la valeur min
+            }
+            else
+            {
+                MenuChar[MenuRow]++;            // Sinon, incrémenter de 1
+            }
+        }
+    }
 
-LCD_Home();                                     // Retourne à la ligne 1, position 0
-LCD_WriteMessage(MenuChar);                     // Affiche le message changé
-LCD_SetEntry(0,MenuRow);                        // Retourne à l'emplacement du curseur
+    LCD_Home();                                 // Retourne à la ligne 1, position 0
+    LCD_WriteMessage(MenuChar);                 // Affiche le message changé
+    LCD_SetEntry(0,MenuRow);                    // Retourne à l'emplacement du curseur
 }
 
 //****************************
@@ -321,7 +324,9 @@ void main(void)
     if (PERIPHERAL_KEY1)                        // Si CMD1 n'est pas pressé pendant le démarrage
     {
         ModeReceive();                          // Mettre en mode Réception
-    } else {                                    // Sinon
+    }
+    else
+    {                                           // Sinon
         while(!PERIPHERAL_KEY1);                // Attendre que CMD1 relâché
         ModeTransmit();                         // Mettre en mode Transmission
     }
@@ -344,10 +349,7 @@ void ModeTransmit(void)                         // Mode : transmission
     
     EUSART_IOPINRX = 0;                         // RX not used, output
     EUSART_SPEN = 1;                            // Enable Buffer
-    
-//****************************
-// Implementation
-//****************************   				
+  				
 												// Afficher le message par défaut
     LCD_Clear();                                // Clear LCD
     LCD_SetCursor(1,0);                         // Show cursor, blink off
@@ -355,7 +357,11 @@ void ModeTransmit(void)                         // Mode : transmission
     LCD_SetEntry(1,0);                          // Se déplacer à la ligne 2
     LCD_WriteMessage(MSG_DEFAULT_L2);           // Afficher le texte sur la ligne 2
     LCD_Home();                                 // Retourner à la ligne 1, position 0
-    
+        
+//****************************
+// Implementation
+//**************************** 
+
     while(1)                                    // Boucle infinie
     {
         
@@ -368,36 +374,34 @@ void ModeTransmit(void)                         // Mode : transmission
             __delay_ms(25);                     // Debouncing
             while(PERIPHERAL_KEY1 == PRESSED);  // Attendre que touche relâchée
             
-        } else {
-        if(PERIPHERAL_KEY2 == PRESSED)    
-        {   //****************************
-            // CMD2 pressé : Changer de caractère
-            // CMD2 pressé longuement : MAJ -> min | min -> MAJ
-            //****************************  
-            
-            ChangeChar();                       // Changer le caractère
-        __delay_ms(25);                         // Debouncing
-        while(PERIPHERAL_KEY2 == PRESSED);      // Attendre que touche relâchée
-        
-        } else {
-        if(PERIPHERAL_KEY4 == 0){
-            //****************************
-            // CMD4 pressé : Transmettre le message
-            //****************************  
-            
-        PERIPHERAL_LED = 0;                     // Allumer le témoin lumineux
-        TransmitMsg(MenuChar);                  // Transmission du message en mode inversé
-        while(PERIPHERAL_KEY4 == 0);            // Attendre que touche relâchée
-        PERIPHERAL_LED = 1;                     // Eteindre le témoin lumineux
         }
-        }
+        else
+        {
+            if(PERIPHERAL_KEY2 == PRESSED)    
+            {   //****************************
+                // CMD2 pressé : Changer de caractère
+                // CMD2 pressé longuement : MAJ -> min | min -> MAJ
+                //****************************  
+                
+                ChangeChar();                   // Changer le caractère
+                __delay_ms(25);                 // Debouncing
+                while(PERIPHERAL_KEY2 == PRESSED); // Attendre que touche relâchée
+            }
+            else
+            {
+                if(PERIPHERAL_KEY4 == 0)
+                {   //****************************
+                    // CMD4 pressé : Transmettre le message
+                    //****************************  
+                    
+                    PERIPHERAL_LED = 0;         // Allumer le témoin lumineux
+                    TransmitMsg(MenuChar);      // Transmission du message en mode inversé
+                    while(PERIPHERAL_KEY4 == 0);// Attendre que touche relâchée
+                    PERIPHERAL_LED = 1;         // Eteindre le témoin lumineux
+                }
+            }
         }
     }
-    
-//****************************
-// Garde-Fou
-//****************************
-    while (1);                                  // Garde-Fou  ->  Boucle infinie
 }
 
 /* Reception mode Implementation **********************************************/
@@ -459,7 +463,7 @@ void interrupt ISR(void)
 //****************************
 // Interruption a la reception de message
 //**************************** 
-    if(EUSART_INTRECEIVE && EUSART_INTRECEIVEFLAG)  // Interuption Data received
+    if(EUSART_INTRECEIVE && EUSART_INTRECEIVEFLAG) // Interuption Data received
     {
         EUSART_INTRECEIVE = 0;                  // Reception interruption off
         unsigned char Temp = RCREG;             // Copie les données reçues dans une variable temporaire
@@ -468,7 +472,9 @@ void interrupt ISR(void)
         if(DataReceived[DataCounter] == 0x00)   // Test valeur reçue est nulle
         {
             DataCounter--;                      // Décrémente l'addresse du tableau pour supprimer cette donnée
-        } else {
+        }
+        else
+        {
             Flags1.DataRC = 1;                  // Si data reçue pas nulle, set flag Data received
         }
         
